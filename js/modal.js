@@ -8,10 +8,16 @@
   
   
       var buttons = params.buttons;
+      console.log(buttons)
+      if(buttons){
+        var buttonsHtml = buttons.map(function(d, i) {
+          return '<button class="dialog__btn ' + (d.className || "") + '">' + d.text + '</button>';
+        }).join("");
+      }else{
+        var buttonsHtml ='';
+      }
   
-      var buttonsHtml = buttons.map(function(d, i) {
-        return '<button class="dialog__btn ' + (d.className || "") + '">' + d.text + '</button>';
-      }).join("");
+  
   
       var tpl = '<div class="dialog">' +
                   '<div class="dialog-title">' + params.title + '<div class="close">×</div></div>' +
@@ -67,10 +73,6 @@
       text: undefined,
       buttonOK: "确定",
       buttonCancel: "取消",
-      buttons: [{
-        text: "确定",
-        className: "primary"
-      }],
       autoClose: true //点击按钮自动关闭对话框，如果你不希望点击按钮就关闭对话框，可以把这个设置为false
     };
   

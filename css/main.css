@@ -227,6 +227,7 @@ button{
     display: flex;
     width: 95%;  
     margin: 0 auto;
+    min-height: 5px;
 }
 .mask--visible,.dialog--visible{
     display: block;
