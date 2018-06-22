@@ -23,7 +23,7 @@ module.exports = {
         // }),
         new extractTextPlugin('./css/index.[hash].css'),
         new CleanWebpackPlugin(
-            ['dist/index.*.js'],　 //匹配删除的文件
+            ['dist'],　 //匹配删除的文件
             {
                 root: __dirname,
                 verbose:true,
