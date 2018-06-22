@@ -3,7 +3,8 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const manifest = require('./vendor-manifest.json')
+const extractTextPlugin = require("extract-text-webpack-plugin");
+// const manifest = require('./vendor-manifest.json')
 
 
 
@@ -17,9 +18,10 @@ module.exports = {
         filename: '[name].[hash].js'
     },
     plugins: [
-        new webpack.DllReferencePlugin({
-            manifest
-        }),
+        // new webpack.DllReferencePlugin({
+        //     manifest
+        // }),
+        new extractTextPlugin('./css/index.[hash].css'),
         new CleanWebpackPlugin(
             ['dist/index.*.js'],　 //匹配删除的文件
             {
@@ -56,11 +58,31 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                use: extractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader",'postcss-loader']
+                })
+            },
+            {
+                test:/\.(htm|html)$/,
+                use:["html-withimg-loader"]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader'
+                use:[{
+                    loader:'url-loader',
+                    options:{
+                        limit:5000,
+                        outputPath:'img/'
+                    }
+                }]      
+            },
+            {
+                test: /\.less$/,
+                use:extractTextPlugin.extract({
+                    fallback:'style-loader',
+                    use:["css-loader",'postcss-loader','less-loader'] 
+                })  
             },
             {
                 test: /\.js$/,
